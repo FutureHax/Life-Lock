@@ -10,12 +10,13 @@ import android.view.View.OnClickListener;
 import com.t3hh4xx0r.lifelock.services.OnOffListenerService;
 
 public class MainActivity extends Activity {
-
+	SettingsProvider settings;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+        settings = new SettingsProvider(this);
         OnOffListenerService.start(this);
         
         findViewById(R.id.vew_graph).setOnClickListener(new OnClickListener() {			
@@ -25,6 +26,16 @@ public class MainActivity extends Activity {
 				startActivity(i);
 			}
 		});
+        
+        if (settings.isFirstLaunchEver()) {
+        	Intent i = new Intent(this, AboutActivity.class);
+    		startActivity(i);
+        } else {
+        	if (settings.shouldSaveUserStats() && !settings.didSaveUserStats()) {
+        		Intent i = new Intent(this, UserStatsActivity.class);
+        		startActivity(i);
+        	}
+        }
     }
 
 

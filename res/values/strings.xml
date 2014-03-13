@@ -4,5 +4,8 @@
     <string name="app_name">Life Lock</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-
+    <string name="title_activity_user_stats">UserStatsActivity</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="about">One day as I sat watching Leverage, a character mentioned that Americans on average check their phones once every 97 seconds. This application tracks this information, allowing you to adjust your behavior accordingly. LifeLock also allows you to submit anonymous data that helps us track this bahavior across different demographics. The data collection portion of this app is 100% opt in, and skipping this will not affect your app experience. </string>
+    
 </resources>

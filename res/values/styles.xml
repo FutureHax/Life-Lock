@@ -17,4 +17,20 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <style name="TimeComponent">
+        <item name="android:layout_width">150px</item>
+        <item name="android:layout_height">150px</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginTop">-17px</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">130px</item>
+    </style>
+
+    <style name="ComponentIcon">
+        <item name="android:layout_width">55px</item>
+        <item name="android:layout_height">55px</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>

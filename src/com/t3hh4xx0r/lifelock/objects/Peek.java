@@ -1,6 +1,12 @@
 package com.t3hh4xx0r.lifelock.objects;
 
-public class Peek {
+import java.io.Serializable;
+
+public class Peek implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5006164022138938948L;
 	long unlockedTime, lockedTime;
 
 	public Peek(long lockTime) {

@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.t3hh4xx0r.lifelock.objects.Peek;
 
@@ -49,6 +50,7 @@ public class DBAdapter {
 	}
 
 	public void addPeek(Peek peek) {
+		Log.d("ADDING PEEK", peek.toString());
 		ContentValues values = new ContentValues();
 		values.put("key_locked", peek.getLockedTime());
 		values.put("key_unlocked", peek.getUnlockTime());
@@ -63,9 +65,8 @@ public class DBAdapter {
 		ArrayList<Peek> res = new ArrayList<Peek>();
 		Cursor c = getPeeksCursor();
 		while (c.moveToNext()) {
-			Peek peek = new Peek(c.getLong(c
-					.getColumnIndex("key_locked")), c.getLong(c
-					.getColumnIndex("key_unlocked")));
+			Peek peek = new Peek(c.getLong(c.getColumnIndex("key_locked")),
+					c.getLong(c.getColumnIndex("key_unlocked")));
 			res.add(peek);
 		}
 		return res;
@@ -74,8 +75,7 @@ public class DBAdapter {
 	public Cursor getPeeksCursor() {
 		Cursor mCursor;
 		mCursor = db.query("peeks", new String[] { "_id", "key_locked",
-				"key_unlocked" }, null,
-				null, null, null, null, null);
+				"key_unlocked" }, null, null, null, null, null, null);
 
 		return mCursor;
 	}
