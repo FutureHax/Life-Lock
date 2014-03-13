@@ -14,23 +14,41 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@drawable/radial"
-    android:layout_gravity="bottom|right"
-    android:orientation="horizontal" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/hold"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_dark" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/minutes"
+            style="@style/TimeComponent" />
+
+        <ImageView
+            style="@style/ComponentIcon"
+            android:src="@drawable/ic_colon" />
+
+        <TextView
+            android:id="@+id/seconds"
+            style="@style/TimeComponent" />
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/minutes"
-        style="@style/TimeComponent" />
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:alpha="1"
+        android:text="Swipe anywhere to dismiss"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/white" />
 
-    <ImageView
-        style="@style/ComponentIcon"
-        android:src="@drawable/ic_colon" />
-
-    <TextView
-        android:id="@+id/seconds"
-        style="@style/TimeComponent" />
-
-</LinearLayout>
+</RelativeLayout>

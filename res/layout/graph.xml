@@ -14,14 +14,37 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin" />
 
-    <TextView
-        android:id="@+id/guide"
-        android:background="#80000000"
+    <LinearLayout
+        android:id="@+id/text_holder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-		android:gravity="center"
-		android:textColor="@android:color/white"
-        android:text="Scroll vertically or horizontally for more data"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_centerHorizontal="true"
+        android:background="#80000000"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:src="@drawable/arrow_up" />
+
+        <TextView
+            android:id="@+id/guide"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Scroll vertically or horizontally for more data"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/white" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:src="@drawable/arrow_right" />
+    </LinearLayout>
 
 </RelativeLayout>

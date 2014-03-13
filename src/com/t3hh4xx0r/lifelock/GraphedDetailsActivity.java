@@ -47,7 +47,7 @@ public class GraphedDetailsActivity extends Activity implements OnTouchListener 
 	public void onCreate(Bundle saved) {
 		super.onCreate(saved);
 		setContentView(R.layout.graph);
-		findViewById(R.id.guide).setOnClickListener(new OnClickListener() {
+		findViewById(R.id.text_holder).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				v.setAnimation(AnimationUtils.loadAnimation(v.getContext(),
@@ -57,7 +57,6 @@ public class GraphedDetailsActivity extends Activity implements OnTouchListener 
 		});
 		plot = (XYPlot) findViewById(R.id.plot);
 		plot.setOnTouchListener(this);
-		tag = "Graph Title";
 
 		plot.setBorderStyle(Plot.BorderStyle.NONE, null, null);
 		plot.setPlotMargins(40, 40, 40, 40);
@@ -101,7 +100,7 @@ public class GraphedDetailsActivity extends Activity implements OnTouchListener 
 		plotPoints = plotPointsFromList(new DBAdapter(this).getPeeks());
 		XYSeries series1 = new SimpleXYSeries(plotPoints,
 				SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "");
-		LineAndPointFormatter series1Format = new CustomLineAndPointFormatter();
+		LineAndPointFormatter series1Format = new LineAndPointFormatter();
 		series1Format.setPointLabelFormatter(new PointLabelFormatter());
 		series1Format.configure(GraphedDetailsActivity.this,
 				R.xml.line_point_formatter_with_plf1);
@@ -110,8 +109,8 @@ public class GraphedDetailsActivity extends Activity implements OnTouchListener 
 		plot.calculateMinMaxVals();
 		minXY = new PointF(plotPoints.size() - 5, 0);
 		maxXY = new PointF(plotPoints.size(), 120);
-		
-		//go to the end.
+
+		// go to the end.
 		plot.setDomainBoundaries(minXY.x, maxXY.x, BoundaryMode.FIXED);
 		plot.setRangeBoundaries(minXY.y, maxXY.y, BoundaryMode.FIXED);
 		plot.redraw();

@@ -22,14 +22,14 @@ import com.t3hh4xx0r.lifelock.R;
 import com.t3hh4xx0r.lifelock.objects.Peek;
 
 public class OnOffListenerService extends Service {
-	protected static final int AVERAGE = 5;
+	protected static final int AVERAGE = 2;
 	Peek currentInstance;
 	DBAdapter db;
 	private ServiceBinder mBinder = new ServiceBinder();
 	TimerDrawerService.ServiceBinder drawerBinder;
 
 	public class ServiceBinder extends Binder {
-
+	
 	}
 
 	static public void start(Context c) {
@@ -49,7 +49,11 @@ public class OnOffListenerService extends Service {
 				} else {
 					// Well thats weird;
 				}
-				TimerDrawerService.start(c, currentInstance);
+				if (drawerBinder == null || drawerBinder.getRoot() == null) {
+					TimerDrawerService.start(c, currentInstance);
+				} else {
+					drawerBinder.add();
+				}
 			} else if (i.getAction().equals(Intent.ACTION_SCREEN_ON)) {
 				if (currentInstance != null) {
 					currentInstance.setUnlockTime(System.currentTimeMillis());
@@ -57,9 +61,8 @@ public class OnOffListenerService extends Service {
 					boolean didGood = (currentInstance
 							.getSecondsSinceLastPeek() > AVERAGE);
 					if (drawerBinder != null) {
-						drawerBinder.getRoot().showMessage(didGood);
 						if (didGood) {							
-							TimerDrawerService.stop(c, drawerBinder);
+							drawerBinder.remove();
 						} else {
 							drawerBinder.getRoot().setLocked(true);
 						}

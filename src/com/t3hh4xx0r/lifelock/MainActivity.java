@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 
 import com.t3hh4xx0r.lifelock.services.OnOffListenerService;
+import com.t3hh4xx0r.lifelock.widgets.TimerView;
 
 public class MainActivity extends Activity {
 	SettingsProvider settings;
@@ -36,6 +38,15 @@ public class MainActivity extends Activity {
         		startActivity(i);
         	}
         }
+        
+//        TimerView root = new TimerView(this);
+//		root.getTimer().setDurationMillis(90 * 1000);
+//		root.getTimer().start();
+//		((ViewGroup) findViewById(R.id.root)).addView(root);
+		
+		
+		
+		
     }
 
 

@@ -18,27 +18,76 @@ package com.t3hh4xx0r.lifelock.widgets;
 
 import java.util.concurrent.TimeUnit;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.os.Handler;
+import android.os.IBinder;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.t3hh4xx0r.lifelock.R;
+import com.t3hh4xx0r.lifelock.services.TimerDrawerService;
 
 /**
  * View used to draw a running timer.
  */
 public class TimerView extends FrameLayout {
+	int alpha = 100;
+	TimerDrawerService.ServiceBinder drawerBinder;
+
+	PointF firstFinger;
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		return false;
+		switch (event.getAction() & MotionEvent.ACTION_MASK) {
+		case MotionEvent.ACTION_DOWN:
+			firstFinger = new PointF(event.getX(), event.getY());
+			break;
+
+		case MotionEvent.ACTION_MOVE:
+			PointF newFinger = new PointF(event.getX(), event.getY());
+			float distance = newFinger.x - firstFinger.x;
+			float part = Math.abs(distance);
+			float percentOfMaxTraveled = (part * 100) / getWidth();
+			int nextAlpha = 100 - Float.valueOf(percentOfMaxTraveled).intValue();
+			if (nextAlpha < 20) {
+				Toast.makeText(getContext(), "Dismissed", Toast.LENGTH_LONG).show();
+				if (drawerBinder != null) {
+					drawerBinder.remove();
+				}
+				return true;
+			}
+			if (nextAlpha < alpha) {
+				alpha = nextAlpha;
+			}
+			Log.d("THE PERCENT TRAVELED", String.valueOf(percentOfMaxTraveled) + " : " + String.valueOf(alpha));
+			this.invalidate();
+			break;
+		}
+
+		return true;
+	}
+
+	@Override
+	public void onDraw(Canvas canvas) {
+		canvas.saveLayerAlpha(0, 0, canvas.getWidth(), canvas.getHeight(),
+				alpha, Canvas.HAS_ALPHA_LAYER_SAVE_FLAG);
+		super.onDraw(canvas);
+	}
+
+	public void setAlpha(int alpha) {
+		this.alpha = alpha;
 	}
 
 	/**
@@ -53,7 +102,6 @@ public class TimerView extends FrameLayout {
 
 	private final TextView mMinutesView;
 	private final TextView mSecondsView;
-	private final TextView mTipView;
 
 	private final int mWhiteColor;
 	private final int mRedColor;
@@ -92,18 +140,33 @@ public class TimerView extends FrameLayout {
 		this(context, null, 0);
 	}
 
+	private ServiceConnection mConnection = new ServiceConnection() {
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			if (service instanceof TimerDrawerService.ServiceBinder) {
+				drawerBinder = (com.t3hh4xx0r.lifelock.services.TimerDrawerService.ServiceBinder) service;
+			}
+			// No need to keep the service bound.
+			getContext().unbindService(this);
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+			// Nothing to do here.
+		}
+	};
+	
 	public TimerView(Context context, AttributeSet attrs, int style) {
 		super(context, attrs, style);
+		context.bindService(new Intent(context, TimerDrawerService.class), mConnection, 0);
 
 		LayoutInflater.from(context).inflate(R.layout.timer, this);
 
 		mMinutesView = (TextView) findViewById(R.id.minutes);
 		mSecondsView = (TextView) findViewById(R.id.seconds);
-		mTipView = new TextView(context);
 
 		mWhiteColor = context.getResources().getColor(android.R.color.white);
-		mRedColor = context.getResources().getColor(
-				android.R.color.holo_red_dark);
+		mRedColor = Color.RED;
 
 		mTimer = new Timer();
 		mTimer.setListener(mTimerListener);
@@ -161,11 +224,11 @@ public class TimerView extends FrameLayout {
 		if (mChangeListener != null) {
 			mChangeListener.onChange();
 		}
+
 	}
 
 	public void showMessage(boolean didGood) {
-		mTipView.setText((didGood ? "Good" : "Bad") + " job!");
-//		this.addView(mTipView);
+		// mTipView.setText((didGood ? "Good" : "Bad") + " job!");
 	}
 
 	public void setLocked(boolean b) {

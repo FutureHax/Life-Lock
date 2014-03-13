@@ -16,6 +16,8 @@ package com.t3hh4xx0r.lifelock.services;
  limitations under the License.
  */
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +25,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.PixelFormat;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
@@ -33,12 +36,20 @@ import com.t3hh4xx0r.lifelock.widgets.TimerView;
 public class TimerDrawerService extends Service {
 	TimerView root;
 	Peek currentInstance;
-	
+
 	private ServiceBinder mBinder = new ServiceBinder();
 
 	public class ServiceBinder extends Binder {
 		public TimerView getRoot() {
 			return root;
+		}
+
+		public void remove() {
+			removeViews();
+		}
+
+		public void add() {
+			addViews();
 		}
 
 	}
@@ -47,13 +58,6 @@ public class TimerDrawerService extends Service {
 		Intent i = new Intent(c, TimerDrawerService.class);
 		i.putExtra("peek", currentInstance);
 		c.startService(i);
-	}
-
-	static public void stop(Context c, ServiceBinder mBinder) {
-		((WindowManager) c.getSystemService(Context.WINDOW_SERVICE))
-				.removeView(mBinder.getRoot());
-		c.stopService(new Intent(c, TimerDrawerService.class));
-
 	}
 
 	@Override
@@ -65,10 +69,19 @@ public class TimerDrawerService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		root = new TimerView(this);
-		((WindowManager) getSystemService(Context.WINDOW_SERVICE)).addView(
-				root, getLayoutParams());
 		root.getTimer().setDurationMillis(90 * 1000);
 		root.getTimer().start();
+		addViews();
+	}
+
+	public void addViews() {
+		try {
+			root.setAlpha(100);
+			((WindowManager) getSystemService(Context.WINDOW_SERVICE)).addView(
+					root, getLayoutParams());
+		} catch (Exception e) {
+
+		}
 	}
 
 	private WindowManager.LayoutParams getLayoutParams() {
@@ -91,8 +104,14 @@ public class TimerDrawerService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		currentInstance = (Peek) intent.getSerializableExtra("peek");
-
 		return START_STICKY;
 	}
 
+	public void removeViews() {
+		try {
+			((WindowManager) getSystemService(Context.WINDOW_SERVICE))
+					.removeView(root);
+		} catch (Exception e) {
+		}
+	}
 }
