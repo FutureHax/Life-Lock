@@ -24,20 +24,17 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.PointF;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.t3hh4xx0r.lifelock.R;
 import com.t3hh4xx0r.lifelock.services.TimerDrawerService;
+import com.t3hh4xx0r.lifelock.widgets.DragLayout.OnTimerDragDismissedListener;
 
 /**
  * View used to draw a running timer.
@@ -45,39 +42,7 @@ import com.t3hh4xx0r.lifelock.services.TimerDrawerService;
 public class TimerView extends FrameLayout {
 	int alpha = 100;
 	TimerDrawerService.ServiceBinder drawerBinder;
-
-	PointF firstFinger;
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		switch (event.getAction() & MotionEvent.ACTION_MASK) {
-		case MotionEvent.ACTION_DOWN:
-			firstFinger = new PointF(event.getX(), event.getY());
-			break;
-
-		case MotionEvent.ACTION_MOVE:
-			PointF newFinger = new PointF(event.getX(), event.getY());
-			float distance = newFinger.x - firstFinger.x;
-			float part = Math.abs(distance);
-			float percentOfMaxTraveled = (part * 100) / getWidth();
-			int nextAlpha = 100 - Float.valueOf(percentOfMaxTraveled).intValue();
-			if (nextAlpha < 20) {
-				Toast.makeText(getContext(), "Dismissed", Toast.LENGTH_LONG).show();
-				if (drawerBinder != null) {
-					drawerBinder.remove();
-				}
-				return true;
-			}
-			if (nextAlpha < alpha) {
-				alpha = nextAlpha;
-			}
-			Log.d("THE PERCENT TRAVELED", String.valueOf(percentOfMaxTraveled) + " : " + String.valueOf(alpha));
-			this.invalidate();
-			break;
-		}
-
-		return true;
-	}
+	DragLayout dragLayout;
 
 	@Override
 	public void onDraw(Canvas canvas) {
@@ -155,13 +120,23 @@ public class TimerView extends FrameLayout {
 			// Nothing to do here.
 		}
 	};
-	
+
 	public TimerView(Context context, AttributeSet attrs, int style) {
 		super(context, attrs, style);
-		context.bindService(new Intent(context, TimerDrawerService.class), mConnection, 0);
+		context.bindService(new Intent(context, TimerDrawerService.class),
+				mConnection, 0);
 
 		LayoutInflater.from(context).inflate(R.layout.timer, this);
 
+		dragLayout = (DragLayout) findViewById(R.id.dragLayout);
+		dragLayout.setDismissedListener(new OnTimerDragDismissedListener() {
+			@Override
+			public void onDismissed() {
+				if (drawerBinder != null) {
+					drawerBinder.remove();
+				}
+			}
+		});
 		mMinutesView = (TextView) findViewById(R.id.minutes);
 		mSecondsView = (TextView) findViewById(R.id.seconds);
 
@@ -171,11 +146,14 @@ public class TimerView extends FrameLayout {
 		mTimer = new Timer();
 		mTimer.setListener(mTimerListener);
 		mTimer.setDurationMillis(0);
-
 	}
 
 	public Timer getTimer() {
 		return mTimer;
+	}
+
+	public DragLayout getDragLayout() {
+		return dragLayout;
 	}
 
 	/**

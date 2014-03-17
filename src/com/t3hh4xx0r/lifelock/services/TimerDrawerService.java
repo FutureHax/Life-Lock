@@ -76,12 +76,12 @@ public class TimerDrawerService extends Service {
 
 	public void addViews() {
 		try {
-			root.setAlpha(100);
 			((WindowManager) getSystemService(Context.WINDOW_SERVICE)).addView(
 					root, getLayoutParams());
 		} catch (Exception e) {
 
 		}
+		root.getDragLayout().maximize();
 	}
 
 	private WindowManager.LayoutParams getLayoutParams() {
