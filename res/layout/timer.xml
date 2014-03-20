@@ -1,34 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.t3hh4xx0r.lifelock.widgets.DragLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/dragLayout"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/holderingz"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#CC000000"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
-    <LinearLayout
-        android:id="@+id/header"
+    <com.t3hh4xx0r.lifelock.widgets.DragLayout
+        android:id="@+id/dragLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:background="#CC000000"
+        android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/minutes"
-            style="@style/TimeComponent" />
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
 
-        <ImageView
-            style="@style/ComponentIcon"
-            android:src="@drawable/ic_colon" />
+            <TextView
+                android:id="@+id/minutes"
+                style="@style/TimeComponent" />
 
-        <TextView
-            android:id="@+id/seconds"
-            style="@style/TimeComponent" />
+            <ImageView
+                style="@style/ComponentIcon"
+                android:src="@drawable/ic_colon" />
 
-        <TextView
-           	android:text="SWIPE DOWN TO DISMISS"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-        </TextView>
-    </LinearLayout>
+            <TextView
+                android:id="@+id/seconds"
+                style="@style/TimeComponent" />
 
-</com.t3hh4xx0r.lifelock.widgets.DragLayout>
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:gravity="center"
+                android:text="Swipe down to dismiss."
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </com.t3hh4xx0r.lifelock.widgets.DragLayout>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="Get back to your life!"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/white" />
+
+</RelativeLayout>
