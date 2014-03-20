@@ -19,10 +19,10 @@ import android.widget.Toast;
 import com.t3hh4xx0r.lifelock.DBAdapter;
 import com.t3hh4xx0r.lifelock.MainActivity;
 import com.t3hh4xx0r.lifelock.R;
+import com.t3hh4xx0r.lifelock.UberApplication;
 import com.t3hh4xx0r.lifelock.objects.Peek;
 
 public class OnOffListenerService extends Service {
-	protected static final int AVERAGE = 2;
 	Peek currentInstance;
 	DBAdapter db;
 	private ServiceBinder mBinder = new ServiceBinder();
@@ -59,7 +59,7 @@ public class OnOffListenerService extends Service {
 					currentInstance.setUnlockTime(System.currentTimeMillis());
 					db.addPeek(currentInstance);
 					boolean didGood = (currentInstance
-							.getSecondsSinceLastPeek() > AVERAGE);
+							.getSecondsSinceLastPeek() > UberApplication.AVERAGE);
 					if (drawerBinder != null) {
 						if (didGood) {							
 							drawerBinder.remove();

@@ -30,6 +30,7 @@ import android.view.Gravity;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 
+import com.t3hh4xx0r.lifelock.UberApplication;
 import com.t3hh4xx0r.lifelock.objects.Peek;
 import com.t3hh4xx0r.lifelock.widgets.TimerView;
 
@@ -69,12 +70,13 @@ public class TimerDrawerService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		root = new TimerView(this);
-		root.getTimer().setDurationMillis(90 * 1000);
+		root.getTimer().setDurationMillis(UberApplication.AVERAGE * 1000);
 		root.getTimer().start();
 		addViews();
 	}
 
 	public void addViews() {
+		root.getTimer().reset();
 		try {
 			((WindowManager) getSystemService(Context.WINDOW_SERVICE)).addView(
 					root, getLayoutParams());

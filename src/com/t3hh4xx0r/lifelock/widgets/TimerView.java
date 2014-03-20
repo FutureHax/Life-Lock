@@ -40,20 +40,8 @@ import com.t3hh4xx0r.lifelock.widgets.DragLayout.OnTimerDragDismissedListener;
  * View used to draw a running timer.
  */
 public class TimerView extends FrameLayout {
-	int alpha = 100;
 	TimerDrawerService.ServiceBinder drawerBinder;
 	DragLayout dragLayout;
-
-	@Override
-	public void onDraw(Canvas canvas) {
-		canvas.saveLayerAlpha(0, 0, canvas.getWidth(), canvas.getHeight(),
-				alpha, Canvas.HAS_ALPHA_LAYER_SAVE_FLAG);
-		super.onDraw(canvas);
-	}
-
-	public void setAlpha(int alpha) {
-		this.alpha = alpha;
-	}
 
 	/**
 	 * Interface to listen for changes on the view layout.
@@ -176,8 +164,10 @@ public class TimerView extends FrameLayout {
 			remainingTimeMillis -= 1;
 			remainingTimeMillis += TimeUnit.SECONDS.toMillis(1);
 		} else {
-			mRedText = !mRedText;
-			remainingTimeMillis = Math.abs(remainingTimeMillis);
+			if (drawerBinder != null) {
+				drawerBinder.remove();
+			}
+			return;
 		}
 
 		if (mRedText) {

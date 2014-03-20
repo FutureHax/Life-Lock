@@ -107,4 +107,11 @@ public class Timer {
     public void setListener(TimerListener listener) {
         mListener = listener;
     }
+
+    public void reset() {
+        mStartTimeMillis = 0;
+        mPauseTimeMillis = 0;
+        
+        start();
+    }
 }

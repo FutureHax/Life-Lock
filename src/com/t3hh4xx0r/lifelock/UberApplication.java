@@ -10,7 +10,7 @@ import com.parse.ParseInstallation;
 import com.parse.PushService;
 
 public class UberApplication extends Application {
-
+	public static final int AVERAGE = 5;
 	@Override
 	public void onCreate() {
 		super.onCreate();
