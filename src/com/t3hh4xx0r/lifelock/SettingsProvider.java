@@ -24,14 +24,6 @@ public class SettingsProvider {
 		}
 	}
 
-	public void setUserStats(UserStats stats) {
-		PreferenceManager.getDefaultSharedPreferences(ctx).edit()
-				.putInt("sex", stats.getSex()).putInt("age", stats.getAge())
-				.putBoolean("didSave", true)
-				.putString("country", stats.getCountry()).apply();
-		stats.saveInBackground();
-	}
-
 	public boolean isFirstLaunchForVersion() {
 		boolean isInPrefs = PreferenceManager.getDefaultSharedPreferences(ctx)
 				.getBoolean("seen_" + getAppVersionCode(ctx), false);
@@ -62,21 +54,4 @@ public class SettingsProvider {
 				.putBoolean("shouldSave", false).apply();
 	}
 
-	public UserStats getStats() {
-		if (!didSaveUserStats()) {
-			return null;
-		}
-		int age = PreferenceManager.getDefaultSharedPreferences(ctx).getInt(
-				"age", -1);
-		int sex = PreferenceManager.getDefaultSharedPreferences(ctx).getInt(
-				"sex", -1);
-		String country = PreferenceManager.getDefaultSharedPreferences(ctx)
-				.getString("country", "UNKNOWN");
-
-		UserStats stats = new UserStats();
-		stats.setAge(age);
-		stats.setCountry(country);
-		stats.setSex(sex);
-		return stats;
-	}
 }

@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
         findViewById(R.id.vew_graph).setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(v.getContext(), GraphedDetailsActivity.class);
+				Intent i = new Intent(v.getContext(), UsageDetailsActivity.class);
 				startActivity(i);
 			}
 		});
@@ -38,14 +38,6 @@ public class MainActivity extends Activity {
         		startActivity(i);
         	}
         }
-        
-//        TimerView root = new TimerView(this);
-//		root.getTimer().setDurationMillis(90 * 1000);
-//		root.getTimer().start();
-//		((ViewGroup) findViewById(R.id.root)).addView(root);
-		
-		
-		
 		
     }
 

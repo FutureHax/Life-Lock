@@ -28,10 +28,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.t3hh4xx0r.lifelock.GraphedDetailsActivity"
-            android:label="@string/app_name" >
-        </activity>
 
         <receiver android:name="com.t3hh4xx0r.lifelock.BootReceiver" >
             <intent-filter>
@@ -42,7 +38,7 @@
 
         <service android:name="com.t3hh4xx0r.lifelock.services.OnOffListenerService" />
         <service android:name="com.t3hh4xx0r.lifelock.services.TimerDrawerService" />
-        
+
         <activity
             android:name="com.t3hh4xx0r.lifelock.UserStatsActivity"
             android:label="@string/title_activity_user_stats" >
@@ -50,6 +46,10 @@
         <activity
             android:name="com.t3hh4xx0r.lifelock.AboutActivity"
             android:label="@string/title_activity_about" >
+        </activity>
+        <activity
+            android:name="com.t3hh4xx0r.lifelock.UsageDetailsActivity"
+            android:label="@string/title_activity_usage_details" >
         </activity>
     </application>
 

@@ -18,12 +18,14 @@ package com.t3hh4xx0r.lifelock.widgets;
 
 import java.util.concurrent.TimeUnit;
 
+import android.annotation.TargetApi;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.AttributeSet;
@@ -91,6 +93,23 @@ public class TimerView extends FrameLayout {
 
 	public TimerView(Context context) {
 		this(context, null, 0);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			setImmersive();
+		} else {
+			setNonImmersive();
+		}
+	}
+	
+	private void setNonImmersive() {
+		setSystemUiVisibility(SYSTEM_UI_FLAG_FULLSCREEN
+				| SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+	}
+
+	@TargetApi(19)
+	private void setImmersive() {
+		setSystemUiVisibility(SYSTEM_UI_FLAG_FULLSCREEN
+				| SYSTEM_UI_FLAG_HIDE_NAVIGATION
+				| SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 	}
 
 	private ServiceConnection mConnection = new ServiceConnection() {

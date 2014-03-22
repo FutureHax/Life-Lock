@@ -1,0 +1,11 @@
+{
+    "applications": {
+        "LifeLock": {
+            "applicationId": "MNwjBOngL7g9a5Er7XXew0rPmvpKUUXSk0zx1D1d", 
+            "masterKey": "iANSWLI0py8A8rHoVWdpV7aMGLmoXhSSbnrj1UHe"
+        }, 
+        "_default": {
+            "link": "LifeLock"
+        }
+    }
+}
