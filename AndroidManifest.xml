@@ -20,7 +20,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.t3hh4xx0r.lifelock.MainActivity"
+            android:name="com.t3hh4xx0r.lifelock.activities.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,15 +40,15 @@
         <service android:name="com.t3hh4xx0r.lifelock.services.TimerDrawerService" />
 
         <activity
-            android:name="com.t3hh4xx0r.lifelock.UserStatsActivity"
+            android:name="com.t3hh4xx0r.lifelock.activities.UserStatsActivity"
             android:label="@string/title_activity_user_stats" >
         </activity>
         <activity
-            android:name="com.t3hh4xx0r.lifelock.AboutActivity"
+            android:name="com.t3hh4xx0r.lifelock.activities.AboutActivity"
             android:label="@string/title_activity_about" >
         </activity>
         <activity
-            android:name="com.t3hh4xx0r.lifelock.UsageDetailsActivity"
+            android:name="com.t3hh4xx0r.lifelock.activities.UsageDetailsActivity"
             android:label="@string/title_activity_usage_details" >
         </activity>
     </application>

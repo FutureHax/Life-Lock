@@ -17,9 +17,9 @@ import android.os.IBinder;
 import android.widget.Toast;
 
 import com.t3hh4xx0r.lifelock.DBAdapter;
-import com.t3hh4xx0r.lifelock.MainActivity;
 import com.t3hh4xx0r.lifelock.R;
 import com.t3hh4xx0r.lifelock.UberApplication;
+import com.t3hh4xx0r.lifelock.activities.MainActivity;
 import com.t3hh4xx0r.lifelock.objects.Peek;
 
 public class OnOffListenerService extends Service {

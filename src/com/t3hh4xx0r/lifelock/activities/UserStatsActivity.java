@@ -1,8 +1,4 @@
-package com.t3hh4xx0r.lifelock;
-
-import com.parse.ParseException;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
+package com.t3hh4xx0r.lifelock.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,7 +8,12 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.RadioGroup;
-import android.widget.Toast;
+
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+import com.t3hh4xx0r.lifelock.R;
+import com.t3hh4xx0r.lifelock.SettingsProvider;
 
 public class UserStatsActivity extends Activity {
 	NumberPicker agePicker;

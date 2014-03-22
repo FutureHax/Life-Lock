@@ -1,9 +1,12 @@
-package com.t3hh4xx0r.lifelock;
+package com.t3hh4xx0r.lifelock.activities;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
-import android.R.raw;
+import org.joda.time.Period;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -21,6 +24,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.parse.ParseUser;
+import com.t3hh4xx0r.lifelock.DBAdapter;
+import com.t3hh4xx0r.lifelock.R;
 import com.t3hh4xx0r.lifelock.objects.Peek;
 
 public class UsageDetailsActivity extends FragmentActivity {
@@ -113,9 +118,11 @@ public class UsageDetailsActivity extends FragmentActivity {
 			DBAdapter db;
 			TextView rawView;
 			TextView adjustedView;
-			
+
 			Long rawResult = 0L, adjustedResult = 0L;
-			private CalculateAverageTask(Context ctx, TextView rawView, TextView adjustedView) {
+
+			private CalculateAverageTask(Context ctx, TextView rawView,
+					TextView adjustedView) {
 				this.ctx = ctx;
 				db = new DBAdapter(ctx);
 				this.rawView = rawView;
@@ -126,10 +133,23 @@ public class UsageDetailsActivity extends FragmentActivity {
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
 				mProgressDialog.dismiss();
-				rawView.setText(Long.toString(rawResult));
-				adjustedView.setText(Long.toString(adjustedResult));
+
+				PeriodFormatter hoursMinutesSeconds = new PeriodFormatterBuilder()
+						.appendHours().appendSuffix(" hour", " hours")
+						.appendSeparator(" and ").appendMinutes()
+						.appendSuffix(" minute", " minutes")
+						.appendSeparator(" and ").appendSeconds()
+						.appendSuffix(" second", " seconds").toFormatter();
+
+				Period rawPeriod = new Period(rawResult.longValue()* 1000);
+				Period adjustedPeriod = new Period(adjustedResult.longValue() * 1000);
+				Log.d("THE VALUSE",
+						"VALUE " + hoursMinutesSeconds.print(rawPeriod));
+				rawView.setText(hoursMinutesSeconds.print(rawPeriod));
+				adjustedView.setText(hoursMinutesSeconds.print(adjustedPeriod));
 				ParseUser.getCurrentUser().put("rawAverage", rawResult);
-				ParseUser.getCurrentUser().put("adjustedAverage", adjustedResult);
+				ParseUser.getCurrentUser().put("adjustedAverage",
+						adjustedResult);
 				ParseUser.getCurrentUser().saveInBackground();
 			}
 
@@ -149,10 +169,11 @@ public class UsageDetailsActivity extends FragmentActivity {
 					rawTotal = rawTotal + p.getSecondsSinceLastPeek();
 					if (p.getSecondsSinceLastPeek() < 3600 * 3) {
 						adjustedCount = adjustedCount + 1;
-						adjustedTotal = adjustedTotal + p.getSecondsSinceLastPeek();
+						adjustedTotal = adjustedTotal
+								+ p.getSecondsSinceLastPeek();
 					}
 				}
-				
+
 				rawResult = rawTotal / peeks.size();
 				adjustedResult = adjustedTotal / adjustedCount;
 				return null;
@@ -166,15 +187,14 @@ public class UsageDetailsActivity extends FragmentActivity {
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 				Bundle savedInstanceState) {
 
-			View rootView = inflater.inflate(
-					R.layout.fragment_user_averages, container, false);
+			View rootView = inflater.inflate(R.layout.fragment_user_averages,
+					container, false);
 			TextView rawAverageTextView = (TextView) rootView
 					.findViewById(R.id.raw_average);
-			
+
 			TextView adjustedAverageTextView = (TextView) rootView
 					.findViewById(R.id.adjusted_average);
-			
-			
+
 			mProgressDialog = new ProgressDialog(getActivity());
 			mProgressDialog.setMessage("A message");
 			mProgressDialog.setIndeterminate(true);
@@ -184,7 +204,7 @@ public class UsageDetailsActivity extends FragmentActivity {
 			final CalculateAverageTask task = new CalculateAverageTask(
 					getActivity(), rawAverageTextView, adjustedAverageTextView);
 			task.execute();
-			
+
 			return rootView;
 		}
 	}
